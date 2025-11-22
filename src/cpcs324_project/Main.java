@@ -51,9 +51,12 @@ public class Main {
                      // Construct file name based on entered size
                     String fileName = "file_" + fileSize + "KB.txt";
                     
+                    // convert file size KB to Bytes
+                    int fileSize_bytes = fileSize*1024;
+                    
                     try {
                         System.out.println("\nStarting random text file generation...");
-                        String random_text = RandomTextGenerator.execute(fileSize);
+                        String random_text = RandomTextGenerator.execute(fileSize_bytes);
                         RandomTextGenerator.saveToFile(fileName, random_text);
                         System.out.println("Complete Generation");
 
