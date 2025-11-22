@@ -1,23 +1,46 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package cpcs324_project;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+
 /**
+ * Implements the baseline Fixed-Length Encoding scheme.
  *
- * @author MahaAlbrakati
+ * This class provides:
+ * - Encoding where every character is represented by a fixed 8-bit codeword.
+ * - Decoding by converting each 8-bit block back to its original character.
+ * - Methods to compute encoded size in bits and bytes.
+ *
  */
 
-
-
-// Implements the Fixed-Length Encoding scheme (Baseline).
 public class FixedLengthEncoder {
 
     // Fixed code length: 8 bits per character (1 byte).
     public static final int BITS_PER_CHAR = 8;
+
+    // Convert character to binary string, pad with leading zeros to ensure it is exactly 8 bits
+    // Example: 'A' → "1000001" → padded to "01000001"
+    public String to8BitBinary(char c) {  
+        return String.format("%8s", Integer.toBinaryString(c))
+                .replace(' ', '0'); 
+    }
+
+    // Encodes the content of a file using fixed 8-bit coding
+    public String encode(String fileName) throws IOException {
+        
+        // Read file content
+        String text = new String(Files.readAllBytes(Paths.get(fileName)));
+
+        StringBuilder encodedBitstream = new StringBuilder();
+
+        for (char c : text.toCharArray()) {
+            encodedBitstream.append(to8BitBinary(c));
+        }
+
+        return encodedBitstream.toString();
+    }
 
     /**
      * Calculates the total encoded length in bits.
@@ -34,11 +57,26 @@ public class FixedLengthEncoder {
         // Compressed size equals the original size in bytes.
         return (long) text.length();
     }
-    
+
     /**
-     * Decoding: Returns the original text for verification purposes.
+     * Decodes the bitstream by reading 8 bits at a time
+     * and converting each block back to a character.
      */
-    public String decode(String text) {
-        return text;
+    public String decode(String encodedBitstream) {
+        StringBuilder decodedText = new StringBuilder();
+        String codeword;
+        // Process stream in block of 8 bits
+        for (int i = 0; i < encodedBitstream.length(); i = i + 8) {
+            codeword = encodedBitstream.substring(i, i + 8);
+            decodedText.append(from8BitBinary(codeword));
+        }
+
+        return decodedText.toString();
+    }
+
+    // Convert an 8-bit binary string back to its corresponding character
+    // Example: "01000001" → 65 → 'A'
+    public char from8BitBinary(String bits) {
+        return (char) Integer.parseInt(bits, 2);
     }
 }
