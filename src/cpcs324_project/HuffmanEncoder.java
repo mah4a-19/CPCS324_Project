@@ -1,16 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package cpcs324_project;
-
-/**
- *
- * @author MahaAlbrakati
- */
-
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,6 +7,16 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
+
+/**
+ * Implements Huffman compression and decompression.
+ * This class:
+ * - Calculates character frequencies
+ * - Builds the Huffman tree
+ * - Generates prefix-free codewords
+ * - Encodes text into a compressed bitstream
+ * - Decodes the bitstream back to the original text
+ */
 
 public class HuffmanEncoder {
 
