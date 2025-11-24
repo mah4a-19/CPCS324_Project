@@ -22,10 +22,21 @@ public class FixedLengthEncoder {
 
     // Convert character to binary string, pad with leading zeros to ensure it is exactly 8 bits
     // Example: 'A' → "1000001" → padded to "01000001"
-    public String to8BitBinary(char c) {  
-        return String.format("%8s", Integer.toBinaryString(c))
-                .replace(' ', '0'); 
-    }
+    public String to8BitBinary(char c) {
+        // Convert the character to its binary representation
+        String bin = Integer.toBinaryString(c);
+
+        // Calculate how many leading zeros are needed to make the binary string 8 bits
+        int pad = 8 - bin.length();
+        
+        // If the binary string is shorter than 8 bits, add leading zeros
+        if (pad > 0) {
+            return "0".repeat(pad) + bin;
+        }
+    
+    // If already 8 bits or more, return as is
+    return bin;
+}
 
     // Encodes the content of a file using fixed 8-bit coding
     public String encode(String fileName) throws IOException {
